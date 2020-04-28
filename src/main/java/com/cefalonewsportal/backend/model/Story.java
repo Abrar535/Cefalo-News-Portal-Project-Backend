@@ -5,11 +5,12 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "stories")
-public class Story {
+public class Story implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO )
     private  Integer storyId;

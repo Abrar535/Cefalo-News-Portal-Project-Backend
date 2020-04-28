@@ -1,11 +1,12 @@
 package com.cefalonewsportal.backend.model;
 
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
+
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO )
     private Integer userId;
