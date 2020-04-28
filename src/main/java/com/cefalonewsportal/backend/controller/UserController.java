@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 //@RequestMapping("/api/users")
 @RestController
@@ -29,7 +28,7 @@ public class UserController {
         return userService.findAll();
 
    }
-
+    /*to delete a user*/
    @DeleteMapping("/api/users/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable("id") int id){
 
@@ -42,5 +41,20 @@ public class UserController {
        return ResponseEntity.ok().body(user);
 
    }
+   /*to update a user*/
+    @PutMapping("/api/users/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable("id") int id, @RequestBody User updatedUser){
+        if(updatedUser.getFullName() == null || updatedUser.getPassword() == null){
+            return ResponseEntity.badRequest().build();
+        }
+        User user = userService.findById(id);
+        if(user == null){
+           return ResponseEntity.notFound().build();
+        }
+        user = userService.update(user , updatedUser);
+        userService.save(user);
+        return ResponseEntity.ok().body(user);
+
+    }
 
 }

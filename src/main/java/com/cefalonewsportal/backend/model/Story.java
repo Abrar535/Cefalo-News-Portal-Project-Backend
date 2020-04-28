@@ -2,7 +2,6 @@ package com.cefalonewsportal.backend.model;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,7 +9,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "stories")
-public class Story implements Serializable {
+public class Story   {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO )
     private  Integer storyId;
@@ -18,9 +17,9 @@ public class Story implements Serializable {
     private String title;
     private String body;
 
-//    @Temporal(TemporalType.TIMESTAMP)
-//    @LastModifiedDate
-    private String publishedDate;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "published_Date", nullable = false)
+    private Date publishedDate;
 
     @ManyToOne(fetch = FetchType.EAGER , optional = false)
     @JoinColumn(name = "user_id",nullable = false)
@@ -51,11 +50,11 @@ public class Story implements Serializable {
         this.body = body;
     }
 
-    public String getPublishedDate() {
+    public Date getPublishedDate() {
         return publishedDate;
     }
 
-    public void setPublishedDate(String publishedDate) {
+    public void setPublishedDate(Date publishedDate) {
         this.publishedDate = publishedDate;
     }
 

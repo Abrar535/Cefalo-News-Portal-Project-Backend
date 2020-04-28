@@ -31,4 +31,10 @@ public class UserService {
         userRepo.delete(user);
 
     }
+    /*Update a user*/
+    public User update(User user , User updatedUser){
+        user.setFullName(updatedUser.getFullName());
+        user.setPassword(updatedUser.getPassword());
+        return user;
+    }
 }
