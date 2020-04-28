@@ -6,7 +6,11 @@ import com.cefalonewsportal.backend.repository.StoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+import java.util.List;
+
 @Service
+
 public class StoryService {
 
 
@@ -21,6 +25,12 @@ public class StoryService {
 
     public Story save(Story story){
         return storyRepo.save(story);
+
+    }
+    public List<Story> findAll(){
+
+        //System.out.println(storyRepo.findAll());
+        return storyRepo.findAll();
 
     }
 

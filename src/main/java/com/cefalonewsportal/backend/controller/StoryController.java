@@ -26,5 +26,11 @@ public class StoryController {
     return ResponseEntity.ok().body(storyService.save(story));
     }
 
+    @GetMapping("/api/stories")
+    public List<Story> getAllStories(){
+
+        System.out.println(storyService.findAll());
+        return storyService.findAll();
+    }
 
 }

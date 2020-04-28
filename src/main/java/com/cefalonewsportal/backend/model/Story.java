@@ -2,6 +2,7 @@ package com.cefalonewsportal.backend.model;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -16,9 +17,11 @@ public class Story {
     private String title;
     private String body;
 
+//    @Temporal(TemporalType.TIMESTAMP)
+//    @LastModifiedDate
     private String publishedDate;
 
-    @ManyToOne(fetch = FetchType.LAZY , optional = false)
+    @ManyToOne(fetch = FetchType.EAGER , optional = false)
     @JoinColumn(name = "user_id",nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
