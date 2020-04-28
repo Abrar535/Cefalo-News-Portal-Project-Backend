@@ -15,9 +15,7 @@ public class Story {
 
     private String title;
     private String body;
-//    @Temporal(TemporalType.TIMESTAMP)
-//    @Column(name = "published_date", nullable = false)
-//    @LastModifiedDate
+
     private String publishedDate;
 
     @ManyToOne(fetch = FetchType.LAZY , optional = false)
