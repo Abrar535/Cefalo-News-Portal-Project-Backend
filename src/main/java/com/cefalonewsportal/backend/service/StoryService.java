@@ -50,6 +50,19 @@ public class StoryService {
         story.setBody(newStory.getBody());
         return story ;
     }
+    /*Delete a story*/
+
+    public Story findByIdAndUserId(int storyId , int userId){
+
+        return storyRepo.findByStoryIdAndUserUserId(storyId,userId);
+
+    }
+
+    public void deleteStory(Story story){
+
+        storyRepo.delete(story);
+
+    }
 
 
 

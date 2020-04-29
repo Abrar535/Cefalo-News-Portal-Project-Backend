@@ -69,4 +69,34 @@ public class StoryController {
 
     }
 
+    /*Delete a story of a user_id*/
+    @DeleteMapping("/api/{userId}/stories/{storyId}")
+    public ResponseEntity<Story> deleteStoryByUserId(@PathVariable("userId") int userId , @PathVariable("storyId") int storyId){
+
+//        User user = storyService.findByIdUser(userId);
+//        if(user == null){
+//            return ResponseEntity.notFound().build();
+//        }
+//        Story story = storyService.findById(storyId);
+//        if(story == null){
+//            return ResponseEntity.notFound().build();
+//        }
+//        if(story.getUser()!=user){
+//            return ResponseEntity.badRequest().build();
+//        }
+//        storyService.deleteStory(story);
+//        return ResponseEntity.ok().body(story);
+
+        Story story = storyService.findByIdAndUserId(storyId,userId);
+        if(story == null){
+            return ResponseEntity.notFound().build();
+        }
+        storyService.deleteStory(story);
+        return ResponseEntity.ok().body(story);
+
+
+    }
+
+
+
 }
