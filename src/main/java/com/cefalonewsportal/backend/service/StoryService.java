@@ -32,10 +32,10 @@ public class StoryService {
         return storyRepo.save(story);
 
     }
-    public List<Story> findAll(){
+    public void findAll(){
 
-        //System.out.println(storyRepo.findAll());
-        return storyRepo.findAll();
+        System.out.println(storyRepo.findAll());
+        //return storyRepo.findAll();
 
     }
 

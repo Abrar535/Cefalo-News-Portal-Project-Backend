@@ -21,9 +21,8 @@ public class Story   {
     @Column(name = "published_Date", nullable = false)
     private Date publishedDate;
 
-    @ManyToOne(fetch = FetchType.EAGER , optional = false,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "user_id",nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     public Integer getStoryId() {

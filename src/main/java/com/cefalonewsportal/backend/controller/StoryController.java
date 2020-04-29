@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 
 @RestController
@@ -30,11 +31,23 @@ public class StoryController {
 
     /*Get all stories*/
     @GetMapping("/api/stories")
-    public List<Story> getAllStories(){
+    public void getAllStories(){
 
-        System.out.println(storyService.findAll());
-        return storyService.findAll();
+        //System.out.println(storyService.findAll());
+        storyService.findAll();
     }
+    @GetMapping("/api/stories/{storyId}")
+    public ResponseEntity<Story> getStory(@PathVariable("storyId") int storyId){
+        Story story =storyService.findById(storyId);
+        if(story == null){
+           return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(story);
+
+
+    }
+
+
 
     /*Get all stories of a user_id*/
     @GetMapping("/api/{userId}/stories")
