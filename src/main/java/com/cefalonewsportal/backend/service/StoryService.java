@@ -37,7 +37,7 @@ public class StoryService {
     public List<Story> findByUserId(int userId){
 
         //System.out.println(storyRepo.findAll());
-        return storyRepo.findByUserId(userId);
+        return storyRepo.findByUserUserId(userId);
 
     }
 
