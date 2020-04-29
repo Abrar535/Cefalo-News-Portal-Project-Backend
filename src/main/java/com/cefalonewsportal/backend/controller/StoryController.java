@@ -13,9 +13,11 @@ import java.util.List;
 public class StoryController {
     @Autowired
     StoryService storyService;
-    @PostMapping("/api/{uid}/stories")
-    public ResponseEntity<Story> createStory(@PathVariable("uid") int uid , @RequestBody Story story ){
-    User user = storyService.findByIdUser(uid);
+
+    /*A user creating a new story*/
+    @PostMapping("/api/{userId}/stories")
+    public ResponseEntity<Story> createStory(@PathVariable("userId") int userId , @RequestBody Story story ){
+    User user = storyService.findByIdUser(userId);
     if(user == null){
 
         return ResponseEntity.notFound().build();
@@ -26,11 +28,23 @@ public class StoryController {
     return ResponseEntity.ok().body(storyService.save(story));
     }
 
+    /*Get all stories*/
     @GetMapping("/api/stories")
     public List<Story> getAllStories(){
 
         System.out.println(storyService.findAll());
         return storyService.findAll();
+    }
+
+    /*Get all stories of a user_id*/
+    @GetMapping("/api/{userId}/stories")
+    public ResponseEntity< List<Story> > getAllStoriesByUserId(@PathVariable("userId") int userId){
+        User user = storyService.findByIdUser(userId);
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(storyService.findByUserId(userId));
+
     }
 
 }

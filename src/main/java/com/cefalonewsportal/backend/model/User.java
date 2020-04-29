@@ -9,17 +9,17 @@ import java.io.Serializable;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO )
-    private Integer userId;
+    private Integer id;
     private String userName;
     private String fullName;
     private String password;
 
     public Integer getUserId() {
-        return userId;
+        return id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserId(Integer id) {
+        this.id = id;
     }
 
     public String getUserName() {
@@ -50,7 +50,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
+                "userId=" + id +
                 ", userName='" + userName + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", password='" + password + '\'' +

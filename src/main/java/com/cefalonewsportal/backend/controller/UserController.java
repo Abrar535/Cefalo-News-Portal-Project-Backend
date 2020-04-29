@@ -28,6 +28,17 @@ public class UserController {
         return userService.findAll();
 
    }
+   /*Get a user by id */
+    @GetMapping("/api/users/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") int id){
+        User user = userService.findById(id);
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(user);
+
+    }
+
     /*to delete a user*/
    @DeleteMapping("/api/users/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable("id") int id){

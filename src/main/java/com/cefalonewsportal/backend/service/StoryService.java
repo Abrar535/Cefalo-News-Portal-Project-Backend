@@ -19,8 +19,8 @@ public class StoryService {
     @Autowired
     UserService userService;
     /*Post a story*/
-    public User findByIdUser(int uid){
-        return userService.findById(uid);
+    public User findByIdUser(int userId){
+        return userService.findById(userId);
     }
 
     public Story save(Story story){
@@ -31,6 +31,13 @@ public class StoryService {
 
         //System.out.println(storyRepo.findAll());
         return storyRepo.findAll();
+
+    }
+
+    public List<Story> findByUserId(int userId){
+
+        //System.out.println(storyRepo.findAll());
+        return storyRepo.findByUserId(userId);
 
     }
 
