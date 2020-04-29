@@ -19,6 +19,11 @@ public class StoryService {
     @Autowired
     UserService userService;
     /*Post a story*/
+
+    public Story findById(int storyId){
+        return storyRepo.findById(storyId).orElse(null);
+    }
+
     public User findByIdUser(int userId){
         return userService.findById(userId);
     }
@@ -39,6 +44,11 @@ public class StoryService {
         //System.out.println(storyRepo.findAll());
         return storyRepo.findByUserUserId(userId);
 
+    }
+    public Story updateStory(Story story, Story newStory){
+        story.setTitle(newStory.getTitle());
+        story.setBody(newStory.getBody());
+        return story ;
     }
 
 

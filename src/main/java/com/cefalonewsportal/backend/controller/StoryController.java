@@ -47,4 +47,26 @@ public class StoryController {
 
     }
 
+    /*Update a story of a user_id*/
+    @PutMapping("/api/{userId}/stories/{storyId}")
+    public ResponseEntity<Story> updateStoryByUserId(@PathVariable("userId") int userId, @PathVariable("storyId") int storyId,@RequestBody Story newStory){
+
+        User user = storyService.findByIdUser(userId);
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+        Story story = storyService.findById(storyId);
+        if(story == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        if(story.getUser()!=user){
+            return ResponseEntity.badRequest().build();
+        }
+        story = storyService.updateStory(story,newStory);
+        storyService.save(story);
+        return ResponseEntity.ok().body(story);
+
+    }
+
 }
