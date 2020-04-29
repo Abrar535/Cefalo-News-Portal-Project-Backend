@@ -31,10 +31,10 @@ public class StoryController {
 
     /*Get all stories*/
     @GetMapping("/api/stories")
-    public void getAllStories(){
+    public List<Story> getAllStories(){
 
         //System.out.println(storyService.findAll());
-        storyService.findAll();
+        return storyService.findAll();
     }
     @GetMapping("/api/stories/{storyId}")
     public ResponseEntity<Story> getStory(@PathVariable("storyId") int storyId){
