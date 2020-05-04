@@ -27,7 +27,9 @@ public class StoryService {
     public User findByIdUser(int userId){
         return userService.findById(userId);
     }
-
+    public List<Story> findByUserName(String userName){
+        return storyRepo.findByUserUserName(userName);
+    }
     public Story save(Story story){
         return storyRepo.save(story);
 

@@ -9,6 +9,7 @@ public interface StoryRepository extends JpaRepository<Story,Integer> {
 
     public List<Story> findByUserUserId(int userId);
     public Story findByStoryIdAndUserUserId(int storyId , int userId);
+    public List<Story> findByUserUserName(String userName);
     //public List<Story> findAllByStoryId();
 
 }

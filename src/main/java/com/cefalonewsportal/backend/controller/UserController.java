@@ -7,6 +7,7 @@ import com.cefalonewsportal.backend.service.MyUserDetailsService;
 import com.cefalonewsportal.backend.service.UserService;
 import com.cefalonewsportal.backend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,46 +31,47 @@ public class UserController {
     private JwtUtil jwtTokenUtil;
 
     /*Authenticate a user*/
-    @PostMapping("/api/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
+    @PostMapping("/api/public/authenticate")
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest){
 
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
             );
+
         }
-        catch(BadCredentialsException e){
-            throw new Exception("Incorrect username or password",e);
+        catch(Exception e){
+
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access Denied :UserName Or PassWord Is InCorrect");
         }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String jwt = jwtTokenUtil.generateToken(userDetails);
-
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
 
     /*to post a user (USER REGISTRATION)*/
-    @PostMapping("/api/register/users")
+    @PostMapping("/api/public/register/users")
     public ResponseEntity<?> createUser( @RequestBody User user){
         User tmpUser = userService.findByUserName(user.getUserName());
         System.out.println("I am called from registration " + tmpUser);
         if( tmpUser != null){
-            return ResponseEntity.status(409).body("UserName already Exists! Please select a unique UserName.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("UserName already Exists! Please select a unique UserName.");
         }
 
         return ResponseEntity.ok().body(userService.save(user));
 
     }
    /*to get all users*/
-   @GetMapping("/api/users")
+   @GetMapping("/api/public/users")
    public List<User> getAllUsers(){
 
         return userService.findAll();
 
    }
    /*Get a user by id */
-    @GetMapping("/api/users/{id}")
+    @GetMapping("/api/public/users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") int id){
         User user = userService.findById(id);
         if(user == null){
@@ -80,7 +82,7 @@ public class UserController {
     }
 
     /*to delete a user*/
-   @DeleteMapping("/api/users/{id}")
+   @DeleteMapping("/api/public/users/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable("id") int id){
 
        User user = userService.findById(id);

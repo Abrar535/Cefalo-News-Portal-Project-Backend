@@ -19,7 +19,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private com.cefalonewsportal.backend.service.MyUserDetailsService myUserDetailsService; @Autowired
+    private com.cefalonewsportal.backend.service.MyUserDetailsService myUserDetailsService;
+    @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
 
@@ -32,9 +33,11 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests().
-                antMatchers("/api/authenticate").permitAll()
-                .antMatchers("/api/register/users").permitAll()
-                .antMatchers("/h2-console/**").permitAll()
+                antMatchers("/api/public/**").permitAll()
+//                .antMatchers("/api/register/users").permitAll()
+//                .antMatchers("/api/public/stories").permitAll()
+//                .antMatchers("/api/{userId}/stories").permitAll()
+//                .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
