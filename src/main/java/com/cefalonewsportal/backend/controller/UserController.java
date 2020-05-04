@@ -49,11 +49,16 @@ public class UserController {
     }
 
 
-    /*to post a user*/
-    @PostMapping("/api/users")
-    public User createUser( @RequestBody User user){
+    /*to post a user (USER REGISTRATION)*/
+    @PostMapping("/api/register/users")
+    public ResponseEntity<?> createUser( @RequestBody User user){
+        User tmpUser = userService.findByUserName(user.getUserName());
+        System.out.println("I am called from registration " + tmpUser);
+        if( tmpUser != null){
+            return ResponseEntity.status(409).body("UserName already Exists! Please select a unique UserName.");
+        }
 
-        return userService.save(user);
+        return ResponseEntity.ok().body(userService.save(user));
 
     }
    /*to get all users*/
