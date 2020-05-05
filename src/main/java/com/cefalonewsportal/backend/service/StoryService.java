@@ -3,7 +3,12 @@ package com.cefalonewsportal.backend.service;
 import com.cefalonewsportal.backend.model.Story;
 import com.cefalonewsportal.backend.model.User;
 import com.cefalonewsportal.backend.repository.StoryRepository;
+import com.cefalonewsportal.backend.util.PageContent;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -18,6 +23,8 @@ public class StoryService {
     StoryRepository storyRepo;
     @Autowired
     UserService userService;
+    @Autowired
+    PageContent pageContent;
     /*Post a story*/
 
     public Story findById(int storyId){
@@ -27,18 +34,28 @@ public class StoryService {
     public User findByIdUser(int userId){
         return userService.findById(userId);
     }
-    public List<Story> findByUserName(String userName){
-        return storyRepo.findByUserUserName(userName);
+    public PageContent findByUserName(int pageNum , int pageSize , String userName)  {
+
+
+        Pageable pageable = PageRequest.of(pageNum,pageSize);
+        Page<Story> page = storyRepo.findByUserUserName(userName,pageable);
+        pageContent.setTotalNumberOfPages(page.getTotalPages());
+        pageContent.setStories(page.getContent());
+        pageContent.setTotalNumberOfStories(page.getTotalElements());
+        return pageContent;
     }
     public Story save(Story story){
         return storyRepo.save(story);
 
     }
-    public List<Story> findAll(){
+    public PageContent findAll(int pageNum , int pageSize){
+        Pageable pageable = PageRequest.of(pageNum,pageSize);
 
-       // System.out.println(storyRepo.findAll());
-        return storyRepo.findAll();
-
+        Page<Story> page = storyRepo.findAll(pageable);
+        pageContent.setStories(page.getContent());
+        pageContent.setTotalNumberOfPages(page.getTotalPages());
+        pageContent.setTotalNumberOfStories( page.getTotalElements());
+        return pageContent ;
     }
 
     public List<Story> findByUserId(int userId){

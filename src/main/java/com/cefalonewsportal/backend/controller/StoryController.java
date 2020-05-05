@@ -3,8 +3,11 @@ package com.cefalonewsportal.backend.controller;
 import com.cefalonewsportal.backend.model.Story;
 import com.cefalonewsportal.backend.model.User;
 import com.cefalonewsportal.backend.service.StoryService;
+import com.cefalonewsportal.backend.service.UserService;
 import com.cefalonewsportal.backend.util.JwtUtil;
+import com.cefalonewsportal.backend.util.PageContent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,9 @@ public class StoryController {
     StoryService storyService;
     @Autowired
     JwtUtil jwtUtil;
+    @Autowired
+    UserService userService;
+
 
     /*A user creating a new story*/
     @PostMapping("/api/stories")
@@ -38,11 +44,15 @@ public class StoryController {
 
     /*Get all stories*/
     @GetMapping("/api/public/stories")
-    public List<Story> getAllStories(){
+    public PageContent getAllStories(@RequestParam("pageNum") int pageNum , @RequestParam("pageSize") int pageSize){
 
-        //System.out.println(storyService.findAll());
-        return storyService.findAll();
+        return storyService.findAll(pageNum,pageSize);
+
+
     }
+
+    /*Get a story by storyId*/
+
     @GetMapping("/api/public/stories/{storyId}")
     public ResponseEntity<Story> getStory(@PathVariable("storyId") int storyId){
         Story story =storyService.findById(storyId);
@@ -56,11 +66,14 @@ public class StoryController {
 
 
     /*Get all stories of a user_name*/
-    @GetMapping("/api/public/{userId}/stories")
-    public ResponseEntity< List<Story> > getAllStoriesByUserId(@PathVariable("userId") String userName){
+    @GetMapping("/api/public/{userName}/stories")
+    public ResponseEntity< ? > getAllStoriesByUserName(@RequestParam("pageNum") int pageNum , @RequestParam("pageSize") int pageSize, @PathVariable("userName") String userName){
+    User user = userService.findByUserName(userName);
+    if(user == null){
+       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("UserName is Not Found!");
 
-
-        return ResponseEntity.ok().body(storyService.findByUserName(userName));
+    }
+    return ResponseEntity.ok().body(storyService.findByUserName(pageNum,pageSize,userName));
 
     }
 
@@ -105,5 +118,5 @@ public class StoryController {
         }
         return Integer.parseInt(userId);
     }
-    //hello
+
 }
