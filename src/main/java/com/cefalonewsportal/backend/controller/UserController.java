@@ -33,7 +33,7 @@ public class UserController {
     /*Authenticate a user*/
     @PostMapping("/api/public/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest){
-
+        System.out.println("I am being hit");
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
@@ -109,6 +109,33 @@ public class UserController {
         return ResponseEntity.ok().body(user);
 
     }
+
+    /*to get a logged in user*/
+    @GetMapping("/api/users/user")
+    public  ResponseEntity<?> getUser(@RequestHeader("Authorization") String authorizationHeader) {
+        int userId = getJwtUserId(authorizationHeader);
+        User user = userService.findById(userId);
+        if(user == null){
+           return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Not Found!");
+        }
+        return ResponseEntity.ok().body(user);
+
+
+    }
+
+
+    public Integer getJwtUserId(final String authorizationHeader){
+        String jwt = null , userId = null ;
+        if(authorizationHeader !=null && authorizationHeader.startsWith("Bearer")){
+            jwt = authorizationHeader.substring(7);
+            userId = jwtTokenUtil.extractUsername(jwt);
+
+        }
+        return Integer.parseInt(userId);
+    }
+
+
+
 
 
 
