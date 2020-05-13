@@ -14,6 +14,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,8 @@ public class UserController {
     private MyUserDetailsService userDetailsService;
     @Autowired
     private JwtUtil jwtTokenUtil;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     /*Authenticate a user*/
     @PostMapping("/api/public/authenticate")
@@ -39,10 +42,11 @@ public class UserController {
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
             );
 
+
         }
         catch(Exception e){
 
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access Denied :UserName Or PassWord Is InCorrect");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access Denied :Username or Password is incorrect");
         }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
@@ -59,6 +63,7 @@ public class UserController {
         if( tmpUser != null){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("UserName already Exists! Please select a unique UserName.");
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return ResponseEntity.ok().body(userService.save(user));
 
