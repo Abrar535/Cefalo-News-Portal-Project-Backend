@@ -112,7 +112,7 @@ public class StoryController {
 
 
     public Integer getJwtUserId(final String authorizationHeader){
-        String jwt = null , userId = null ;
+        String jwt , userId = null ;
         if(authorizationHeader !=null && authorizationHeader.startsWith("Bearer")){
             jwt = authorizationHeader.substring(7);
             userId = jwtUtil.extractUsername(jwt);

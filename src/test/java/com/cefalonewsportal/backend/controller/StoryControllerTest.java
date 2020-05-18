@@ -53,7 +53,7 @@ public class StoryControllerTest {
     public  String jwt ;
     User user;
     @Before
-    public void setUp() throws Exception{
+    public void setUp()  {
         user = new User(1,"abrar","Abrar Ul Haque","abcd");
         Story story = new Story(2,"Hello Title","Hello Body",new Date(),user);
         Story story1 = new Story(3,"Hello Title","Hello Body",new Date(),user);
