@@ -32,6 +32,33 @@ public class Story   {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
+    public Story(){
+
+    }
+
+    public Story(String title , String body ) {
+
+        this.title = title ;
+        this.body = body ;
+
+    }
+
+
+    public Story(String title , String body , Date publishedDate , User user) {
+
+        this.title = title ;
+        this.body = body ;
+        this.publishedDate = publishedDate ;
+        this.user = user;
+    }
+
+    public Story(int storyId,String title , String body , Date publishedDate , User user) {
+    this.storyId = storyId ;
+    this.title = title ;
+    this.publishedDate = publishedDate ;
+    this.user = user;
+    }
+
     public Integer getStoryId() {
         return storyId;
     }

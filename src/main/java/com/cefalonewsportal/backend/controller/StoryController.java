@@ -30,7 +30,8 @@ public class StoryController {
     /*A user creating a new story*/
     @PostMapping("/api/stories")
     public ResponseEntity<Story> createStory(@RequestBody Story story, @RequestHeader("Authorization") String authorizationHeader ){
-    Integer userId = getJwtUserId(authorizationHeader);
+        System.out.println("I am hit from createStory api");
+        Integer userId = getJwtUserId(authorizationHeader);
     User user = storyService.findByIdUser(userId);
     if(user == null){
 
@@ -97,7 +98,7 @@ public class StoryController {
     /*Delete a story of a user_id*/
     @DeleteMapping("/api/stories/{storyId}")
     public ResponseEntity<?> deleteStoryByUserId(@PathVariable("storyId") int storyId,@RequestHeader("Authorization") String authorizationHeader ){
-
+        System.out.println("delete is called");
         Integer userId = getJwtUserId(authorizationHeader);
         Story story = storyService.findByIdAndUserId(storyId,userId);
         if(story == null){

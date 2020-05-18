@@ -12,6 +12,12 @@ public class PageContent {
     private Long totalNumberOfStories;
     private List<Story> stories;
 
+//    public PageContent(int totalNumberOfPages, Long totalNumberOfStories, List<Story> stories) {
+//        this.totalNumberOfPages = totalNumberOfPages;
+//        this.totalNumberOfStories = totalNumberOfStories;
+//        this.stories = stories;
+//    }
+
     public Long getTotalNumberOfStories() {
         return totalNumberOfStories;
     }

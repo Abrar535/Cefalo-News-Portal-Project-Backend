@@ -49,7 +49,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access Denied :Username or Password is incorrect");
         }
 
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+         UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String jwt = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }

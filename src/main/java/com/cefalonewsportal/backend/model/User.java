@@ -51,6 +51,22 @@ public class User {
         this.password = password;
     }
 
+    public User() {
+    }
+
+    public User(String userName, String fullName, String password) {
+        this.userName=userName;
+        this.fullName=fullName;
+        this.password=password;
+    }
+
+    public User(int userId,String userName, String fullName, String password) {
+        this.userId=userId;
+        this.userName=userName;
+        this.fullName=fullName;
+        this.password=password;
+    }
+
 
     @Override
     public String toString() {
