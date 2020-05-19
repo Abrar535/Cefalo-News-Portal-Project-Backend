@@ -52,6 +52,7 @@ public class StoryRepositoryTest {
     @Test
     public void findByUserUserIdTest(){
         List<Story> stories =storyRepository.findByUserUserId(1);
+        System.out.println(stories.size());
         assertEquals(stories.size(),3);
 
     }

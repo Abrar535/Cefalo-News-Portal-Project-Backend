@@ -55,6 +55,7 @@ public class Story   {
     public Story(int storyId,String title , String body , Date publishedDate , User user) {
     this.storyId = storyId ;
     this.title = title ;
+    this.body= body;
     this.publishedDate = publishedDate ;
     this.user = user;
     }

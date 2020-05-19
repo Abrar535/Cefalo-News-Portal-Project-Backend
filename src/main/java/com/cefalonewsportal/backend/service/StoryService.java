@@ -50,7 +50,7 @@ public class StoryService {
     }
     public PageContent findAll(int pageNum , int pageSize){
         Pageable pageable = PageRequest.of(pageNum,pageSize);
-
+        System.out.println("I am here");
         Page<Story> page = storyRepo.findAll(pageable);
         pageContent.setStories(page.getContent());
         pageContent.setTotalNumberOfPages(page.getTotalPages());
