@@ -36,8 +36,10 @@ public class UserController {
     /*Authenticate a user*/
     @PostMapping("/api/public/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest){
-        System.out.println("I am being hit");
+       // System.out.println("I am being tokenized "+authenticationRequest.getUsername()+" "+authenticationRequest.getPassword());
+        //System.out.println(userService.findByUserName(authenticationRequest.getUsername()));
         try {
+
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
             );
@@ -58,6 +60,7 @@ public class UserController {
     /*to post a user (USER REGISTRATION)*/
     @PostMapping("/api/public/register/users")
     public ResponseEntity<?> createUser( @RequestBody User user){
+        //System.out.println(user);
         User tmpUser = userService.findByUserName(user.getUserName());
         System.out.println("I am called from registration " + tmpUser);
         if( tmpUser != null){
@@ -130,7 +133,7 @@ public class UserController {
 
 
     public Integer getJwtUserId(final String authorizationHeader){
-        String jwt = null , userId = null ;
+        String jwt  , userId = null ;
         if(authorizationHeader !=null && authorizationHeader.startsWith("Bearer")){
             jwt = authorizationHeader.substring(7);
             userId = jwtTokenUtil.extractUsername(jwt);
