@@ -26,11 +26,15 @@ public class Story   {
     @Column(name = "published_Date", nullable = false)
     private Date publishedDate;
 
+    private boolean drafted  ;
+
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
+
+
 
     public Story(){
 
@@ -92,6 +96,13 @@ public class Story   {
         this.publishedDate = publishedDate;
     }
 
+    public boolean getDrafted(){
+        return drafted;
+    }
+    public void setDrafted(boolean drafted){
+        this.drafted = drafted;
+    }
+
     public User getUser() {
         return user;
     }
@@ -107,6 +118,7 @@ public class Story   {
                 ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
                 ", publishedDate=" + publishedDate +
+                ", drafted=" + drafted +
                 ", user=" + user +
                 '}';
     }

@@ -10,9 +10,12 @@ import java.util.List;
 
 public interface StoryRepository extends JpaRepository<Story,Integer> {
 
-    public List<Story> findByUserUserId(int userId);
-    public Story findByStoryIdAndUserUserId(int storyId , int userId);
-    public Page<Story> findByUserUserName(String userName, Pageable pageable);
+     List<Story> findByUserUserId(int userId);
+     Story findByStoryIdAndUserUserId(int storyId , int userId);
+     Page<Story> findByUserUserName(String userName, Pageable pageable);
+     Page<Story> findByDrafted(boolean value,Pageable pageable);
+     Page<Story> findByDraftedAndUserUserId(boolean value , int userId,Pageable pageable);
+
 
 
 }

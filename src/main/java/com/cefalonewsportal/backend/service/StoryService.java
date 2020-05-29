@@ -48,10 +48,11 @@ public class StoryService {
         return storyRepo.save(story);
 
     }
+//    get undrafted stories
     public PageContent findAll(int pageNum , int pageSize){
         Pageable pageable = PageRequest.of(pageNum,pageSize);
-        System.out.println("I am here");
-        Page<Story> page = storyRepo.findAll(pageable);
+//        System.out.println("I am here");
+        Page<Story> page = storyRepo.findByDrafted(false,pageable);
         pageContent.setStories(page.getContent());
         pageContent.setTotalNumberOfPages(page.getTotalPages());
         pageContent.setTotalNumberOfStories( page.getTotalElements());
@@ -84,6 +85,21 @@ public class StoryService {
     }
 
 
+    public PageContent findByDraftedAndUserId(int pageNum, int pageSize, Integer userId) {
+        Pageable pageable = PageRequest.of(pageNum,pageSize);
+        Page<Story> page = storyRepo.findByDraftedAndUserUserId(true , userId,pageable);
+        pageContent.setStories(page.getContent());
+        pageContent.setTotalNumberOfPages(page.getTotalPages());
+        pageContent.setTotalNumberOfStories( page.getTotalElements());
+        return pageContent ;
 
+    }
+    public Story toggleDraftedStoryState(Story story){
+
+        story.setDrafted(!story.getDrafted());
+
+        return save(story) ;
+
+    }
 
 }

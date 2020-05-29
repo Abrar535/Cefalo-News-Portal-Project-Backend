@@ -30,7 +30,7 @@ public class StoryController {
     /*A user creating a new story*/
     @PostMapping("/api/stories")
     public ResponseEntity<Story> createStory(@RequestBody Story story, @RequestHeader("Authorization") String authorizationHeader ){
-        System.out.println("I am hit from createStory api");
+        System.out.println("I am hit from createStory api "+ story);
         Integer userId = getJwtUserId(authorizationHeader);
     User user = storyService.findByIdUser(userId);
     if(user == null){
@@ -78,7 +78,20 @@ public class StoryController {
 
     }
 
-    /*Update a story of a user_id*/
+    /*Get all drafted stories*/
+    @GetMapping("/api/stories/drafted")
+    public ResponseEntity<?> getDraftedStoriesByUserId(@RequestParam("pageNum") int pageNum , @RequestParam("pageSize") int pageSize,@RequestHeader("Authorization") String authorizationHeader ){
+        Integer userId = getJwtUserId(authorizationHeader);
+        User user = userService.findById(userId);
+        if(user == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("UserName is Not Found!");
+
+        }
+        return ResponseEntity.ok().body(storyService.findByDraftedAndUserId(pageNum,pageSize,userId));
+    }
+
+
+        /*Update a story of a user_id*/
     @PutMapping("/api/stories/{storyId}")
     public ResponseEntity<?> updateStoryByUserId(@PathVariable("storyId") int storyId,@RequestBody Story newStory,@RequestHeader("Authorization") String authorizationHeader ){
         System.out.println("called from update stories");
@@ -92,6 +105,18 @@ public class StoryController {
         story = storyService.updateStory(story,newStory);
         storyService.save(story);
         return ResponseEntity.ok().body(story);
+
+    }
+
+    @PutMapping("/api/drafted/stories/{storyId}")
+    public ResponseEntity<?> toggleDraftedStoryState(@PathVariable("storyId") int storyId , @RequestHeader("Authorization") String authorizationHeader ){
+        Integer userId = getJwtUserId(authorizationHeader);
+        Story story = storyService.findByIdAndUserId(storyId,userId);
+
+        if(story == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No such Story Found to be updated from drafted");
+        }
+        return ResponseEntity.ok().body(storyService.toggleDraftedStoryState(story));
 
     }
 
@@ -109,6 +134,8 @@ public class StoryController {
 
 
     }
+
+
 
 
     public Integer getJwtUserId(final String authorizationHeader){
