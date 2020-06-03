@@ -108,11 +108,9 @@ public class StoryService {
         List<Story> stories = storyRepo.findByDraftedAndScheduled(false , true);
 
         for(Story story:stories){
-//            System.out.println(story);
-//            System.out.println(story.getScheduledDate());
             System.out.println(story.getScheduledDate());
             if(story.getScheduledDate().before(new Date())){
-                System.out.println("entered");
+
                 story.setPublishedDate(new Date());
                 story.setScheduled(false);
                 storyRepo.save(story);
