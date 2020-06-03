@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -29,7 +30,9 @@ public class StoryController {
 
     /*A user creating a new story*/
     @PostMapping("/api/stories")
-    public ResponseEntity<Story> createStory(@RequestBody Story story, @RequestHeader("Authorization") String authorizationHeader ){
+    public ResponseEntity<?> createStory(@RequestBody Story story, @RequestHeader("Authorization") String authorizationHeader ){
+        //System.out.println(story);
+
         System.out.println("I am hit from createStory api "+ story);
         Integer userId = getJwtUserId(authorizationHeader);
     User user = storyService.findByIdUser(userId);
@@ -38,7 +41,11 @@ public class StoryController {
         return ResponseEntity.notFound().build();
 
     }
+    if(story.getScheduled()  && story.getScheduledDate() == null){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Scheduled date cannot be empty for a scheduled story");
+    }
     story.setUser(user);
+
 
     return ResponseEntity.ok().body(storyService.save(story));
     }
@@ -147,5 +154,8 @@ public class StoryController {
         }
         return Integer.parseInt(userId);
     }
-
+    @Scheduled(fixedDelay = 20000)
+    public void checkSchedule(){
+        storyService.checkSchedule();
+    }
 }

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -52,7 +53,7 @@ public class StoryService {
     public PageContent findAll(int pageNum , int pageSize){
         Pageable pageable = PageRequest.of(pageNum,pageSize);
 //        System.out.println("I am here");
-        Page<Story> page = storyRepo.findByDrafted(false,pageable);
+        Page<Story> page = storyRepo.findByDraftedAndScheduled(false,false , pageable);
         pageContent.setStories(page.getContent());
         pageContent.setTotalNumberOfPages(page.getTotalPages());
         pageContent.setTotalNumberOfStories( page.getTotalElements());
@@ -101,5 +102,27 @@ public class StoryService {
         return save(story) ;
 
     }
+
+    public void checkSchedule(){
+        System.out.println("called");
+        List<Story> stories = storyRepo.findByDraftedAndScheduled(false , true);
+
+        for(Story story:stories){
+//            System.out.println(story);
+//            System.out.println(story.getScheduledDate());
+            System.out.println(story.getScheduledDate());
+            if(story.getScheduledDate().before(new Date())){
+                System.out.println("entered");
+                story.setPublishedDate(new Date());
+                story.setScheduled(false);
+                storyRepo.save(story);
+                System.out.println(story);
+            }
+
+        }
+
+
+    }
+
 
 }

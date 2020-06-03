@@ -1,6 +1,7 @@
 package com.cefalonewsportal.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.OnDelete;
@@ -26,7 +27,11 @@ public class Story   {
     @Column(name = "published_Date", nullable = false)
     private Date publishedDate;
 
+    @Column(name = "scheduled_Date")
+    private Date scheduledDate;
+
     private boolean drafted  ;
+    private boolean scheduled  ;
 
 
     @ManyToOne
@@ -92,6 +97,7 @@ public class Story   {
         return publishedDate;
     }
 
+
     public void setPublishedDate(Date publishedDate) {
         this.publishedDate = publishedDate;
     }
@@ -103,12 +109,28 @@ public class Story   {
         this.drafted = drafted;
     }
 
+    public boolean getScheduled(){
+        return scheduled;
+    }
+    public void setScheduled(boolean scheduled){
+        this.scheduled = scheduled;
+    }
+
+
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Date getScheduledDate() {
+        return scheduledDate;
+    }
+
+    public void setScheduledDate(Date scheduledDate) {
+        this.scheduledDate = scheduledDate;
     }
 
     @Override
@@ -119,6 +141,7 @@ public class Story   {
                 ", body='" + body + '\'' +
                 ", publishedDate=" + publishedDate +
                 ", drafted=" + drafted +
+                ", scheduled=" + scheduled +
                 ", user=" + user +
                 '}';
     }

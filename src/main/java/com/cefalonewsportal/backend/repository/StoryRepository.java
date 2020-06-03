@@ -14,6 +14,8 @@ public interface StoryRepository extends JpaRepository<Story,Integer> {
      Story findByStoryIdAndUserUserId(int storyId , int userId);
      Page<Story> findByUserUserName(String userName, Pageable pageable);
      Page<Story> findByDrafted(boolean value,Pageable pageable);
+     List<Story> findByDraftedAndScheduled(boolean drafted,boolean scheduled);
+     Page<Story> findByDraftedAndScheduled(boolean drafted,boolean scheduled,Pageable pageable);
      Page<Story> findByDraftedAndUserUserId(boolean value , int userId,Pageable pageable);
 
 
