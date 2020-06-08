@@ -69,6 +69,27 @@ public class Story   {
     this.user = user;
     }
 
+    public Story(String title , String body , Date publishedDate , User user, boolean scheduled , boolean drafted) {
+
+        this.title = title ;
+        this.body = body ;
+        this.publishedDate = publishedDate ;
+        this.user = user;
+        this.drafted = drafted ;
+        this.scheduled = scheduled ;
+    }
+
+    public Story(String title , String body , Date publishedDate , User user , boolean scheduled , boolean drafted , Date scheduledDate){
+        this.title =title ;
+        this.body = body ;
+        this.publishedDate = publishedDate ;
+        this.user = user ;
+        this.scheduled = scheduled ;
+        this.drafted = drafted;
+        this.scheduledDate = scheduledDate ;
+
+    }
+
     public Integer getStoryId() {
         return storyId;
     }

@@ -39,6 +39,7 @@ public class StoryServiceTest {
     UserService userService;
 
     User user ;
+
     @Before
     public void setUp(){
 
@@ -48,20 +49,25 @@ public class StoryServiceTest {
         Story story2 = new Story(4,"Hello Title","Hello Body",new Date(),user);
 
         List<Story> stories = new ArrayList<>();
+
         stories.add(story);
         stories.add(story1);
         stories.add(story2);
 
 
+
+
         Page<Story> page = new PageImpl<>(stories);
         //Pageable pageable = PageRequest.of(0,4);
         System.out.println(page.getContent());
-        Mockito.when(storyRepository.findAll(any(Pageable.class))).thenReturn(page);
+        //Mockito.when(storyRepository.findAll(any(Pageable.class))).thenReturn(page);
         Mockito.when(storyRepository.findByUserUserName(any(String.class),any(Pageable.class))).thenReturn(page);
         Mockito.when(storyRepository.findById(any(Integer.class))).thenReturn(java.util.Optional.of(story));
         Mockito.when(storyRepository.findByStoryIdAndUserUserId(any(Integer.class),any(Integer.class))).thenReturn(story);
         Mockito.when(storyRepository.save(any(Story.class))).thenReturn(story);
         Mockito.doNothing().when(storyRepository).delete(any(Story.class));
+        Mockito.when(storyRepository.findByDraftedAndScheduled(any(Boolean.class) ,any(Boolean.class) , any(Pageable.class))).thenReturn(page);
+        //Mockito.when(storyRepository.findByDraftedAndScheduled(false ,true)).thenReturn();
     }
     @Test
     public void findByIdTest(){
@@ -94,7 +100,7 @@ public class StoryServiceTest {
     @Test
     public void findAllTest(){
 
-        int pageNum = 0 , pageSize = 2;
+        int pageNum = 0 , pageSize = 3;
         PageContent pageContent = storyService.findAll(pageNum,pageSize);
         assertEquals(pageContent.getTotalNumberOfStories(),3);
 
@@ -117,6 +123,22 @@ public class StoryServiceTest {
          storyService.deleteStory(new Story());
         System.out.println("Deleted");
     }
+    @Test
+    public void checkScheduleTest(){
+        Story story3 = new Story("Drafted and scheduled story" , "Drafted and scheduled body", new Date(), user, true ,false, new Date());
+        Story story4 = new Story("Drafted and scheduled story" , "Drafted and scheduled body", new Date(), user, true ,false, new Date());
+        Story story5 = new Story("Drafted and scheduled story" , "Drafted and scheduled body", new Date(), user, true ,false,new Date());
+        List<Story> stories = new ArrayList<>();
+        stories.add(story3);
+        stories.add(story4);
+        stories.add(story5);
+        Mockito.when(storyRepository.findByDraftedAndScheduled(any(Boolean.class) ,any(Boolean.class))).thenReturn(stories);
+        Mockito.when(storyRepository.save(any(Story.class))).thenReturn(story3);
+        storyService.checkSchedule();
+
+
+    }
+
 
 
 

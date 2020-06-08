@@ -29,17 +29,20 @@ public class StoryRepositoryTest {
     TestEntityManager entityManager;
     @Autowired
     StoryRepository storyRepository;
-
+    User user ;
     @Before
     public void setUp(){
-        User user = new User("abrar","Abrar Ul Haque","abcd");
+        user = new User("abrar","Abrar Ul Haque","abcd");
         Story story = new Story("Hello Title","Hello Body",new Date(),user);
         Story story1 = new Story("Hello Title","Hello Body",new Date(),user);
         Story story2 = new Story("Hello Title","Hello Body",new Date(),user);
+
         entityManager.persist(user);
         entityManager.persist(story);
         entityManager.persist(story1);
         entityManager.persist(story2);
+
+
         entityManager.flush();
     }
     @Test
@@ -63,6 +66,20 @@ public class StoryRepositoryTest {
         Story story = storyRepository.findByStoryIdAndUserUserId(storyId,userId);
         assertEquals(story.getStoryId(),2);
         assertEquals(story.getUser().getUserId(),1);
+    }
+
+    @Test
+    public void findByDraftedAndScheduledTest(){
+        Story story3 = new Story("Drafted and scheduled story" , "Drafted and scheduled body", new Date(), user, true ,false);
+        Story story4 = new Story("Drafted and scheduled story" , "Drafted and scheduled body", new Date(), user, true ,false);
+        Story story5 = new Story("Drafted and scheduled story" , "Drafted and scheduled body", new Date(), user, true ,false);
+        entityManager.persist(story3);
+        entityManager.persist(story4);
+        entityManager.persist(story5);
+        List<Story> stories = storyRepository.findByDraftedAndScheduled(false , true);
+        assertEquals(stories.size(),3);
+
+
     }
 
 
