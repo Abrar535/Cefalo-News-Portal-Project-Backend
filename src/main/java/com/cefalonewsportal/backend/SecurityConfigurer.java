@@ -44,7 +44,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                .headers().frameOptions().disable().and()
                .csrf().disable().authorizeRequests().
                 antMatchers("/api/public/**").permitAll()
-//                .antMatchers("/api/register/users").permitAll()
+               .antMatchers("/api/public/tags").permitAll()
 //                .antMatchers("/api/public/stories").permitAll()
 //                .antMatchers("/api/{userId}/stories").permitAll()
                 .antMatchers("/h2-console/**").permitAll()

@@ -3,6 +3,7 @@ package com.cefalonewsportal.backend.controller;
 import com.cefalonewsportal.backend.model.Story;
 import com.cefalonewsportal.backend.model.User;
 import com.cefalonewsportal.backend.service.StoryService;
+import com.cefalonewsportal.backend.service.TagService;
 import com.cefalonewsportal.backend.service.UserService;
 import com.cefalonewsportal.backend.util.JwtUtil;
 import com.cefalonewsportal.backend.util.PageContent;
@@ -31,9 +32,7 @@ public class StoryController {
     /*A user creating a new story*/
     @PostMapping("/api/stories")
     public ResponseEntity<?> createStory(@RequestBody Story story, @RequestHeader("Authorization") String authorizationHeader ){
-        //System.out.println(story);
-
-        System.out.println("I am hit from createStory api "+ story);
+        //System.out.println("I am hit from createStory api "+ story);
         Integer userId = getJwtUserId(authorizationHeader);
     User user = storyService.findByIdUser(userId);
     if(user == null){
@@ -44,6 +43,7 @@ public class StoryController {
     if(story.getScheduled()  && story.getScheduledDate() == null){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Scheduled date cannot be empty for a scheduled story");
     }
+    story = storyService.addStoryTags(story);
     story.setUser(user);
 
 
@@ -96,9 +96,17 @@ public class StoryController {
         }
         return ResponseEntity.ok().body(storyService.findByDraftedAndUserId(pageNum,pageSize,userId));
     }
+    /*Get all stories by tags */
+    @GetMapping("/api/public/tags/{tagName}/story")
+    public ResponseEntity<?> getAllStoriesByTag(@RequestParam("pageNum") int pageNum , @RequestParam("pageSize") int pageSize , @PathVariable ("tagName") String tagName ){
+
+        return ResponseEntity.ok().body(storyService.getAllStoryByTag(pageNum,pageSize,tagName));
 
 
-        /*Update a story of a user_id*/
+    }
+
+
+    /*Update a story of a user_id*/
     @PutMapping("/api/stories/{storyId}")
     public ResponseEntity<?> updateStoryByUserId(@PathVariable("storyId") int storyId,@RequestBody Story newStory,@RequestHeader("Authorization") String authorizationHeader ){
         System.out.println("called from update stories");
@@ -130,7 +138,7 @@ public class StoryController {
     /*Delete a story of a user_id*/
     @DeleteMapping("/api/stories/{storyId}")
     public ResponseEntity<?> deleteStoryByUserId(@PathVariable("storyId") int storyId,@RequestHeader("Authorization") String authorizationHeader ){
-        System.out.println("delete is called");
+
         Integer userId = getJwtUserId(authorizationHeader);
         Story story = storyService.findByIdAndUserId(storyId,userId);
         if(story == null){
@@ -145,6 +153,7 @@ public class StoryController {
 
 
 
+
     public Integer getJwtUserId(final String authorizationHeader){
         String jwt , userId = null ;
         if(authorizationHeader !=null && authorizationHeader.startsWith("Bearer")){
@@ -154,7 +163,7 @@ public class StoryController {
         }
         return Integer.parseInt(userId);
     }
-    @Scheduled(fixedDelay = 20000)
+    @Scheduled(fixedDelay = 20000000)
     public void checkSchedule(){
         storyService.checkSchedule();
     }

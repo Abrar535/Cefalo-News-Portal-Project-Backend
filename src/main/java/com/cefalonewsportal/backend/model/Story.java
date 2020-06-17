@@ -11,6 +11,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "stories")
@@ -38,6 +40,10 @@ public class Story   {
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
+
+    @ManyToMany
+    private Set<Tag> tags;
+
 
 
 
@@ -154,16 +160,25 @@ public class Story   {
         this.scheduledDate = scheduledDate;
     }
 
-    @Override
-    public String toString() {
-        return "Story{" +
-                "storyId=" + storyId +
-                ", title='" + title + '\'' +
-                ", body='" + body + '\'' +
-                ", publishedDate=" + publishedDate +
-                ", drafted=" + drafted +
-                ", scheduled=" + scheduled +
-                ", user=" + user +
-                '}';
+    public Set<Tag> getTags() {
+        return tags;
     }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
+//    @Override
+//    public String toString() {
+//        return "Story{" +
+//                "storyId=" + storyId +
+//                ", title='" + title + '\'' +
+//                ", body='" + body + '\'' +
+//                ", publishedDate=" + publishedDate +
+//                ", scheduledDate=" + scheduledDate +
+//                ", drafted=" + drafted +
+//                ", scheduled=" + scheduled +
+//                ", user=" + user +
+//                '}';
+//    }
 }

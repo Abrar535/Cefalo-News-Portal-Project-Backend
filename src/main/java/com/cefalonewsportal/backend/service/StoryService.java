@@ -1,10 +1,11 @@
 package com.cefalonewsportal.backend.service;
 
 import com.cefalonewsportal.backend.model.Story;
+import com.cefalonewsportal.backend.model.Tag;
 import com.cefalonewsportal.backend.model.User;
 import com.cefalonewsportal.backend.repository.StoryRepository;
+import com.cefalonewsportal.backend.repository.TagRepository;
 import com.cefalonewsportal.backend.util.PageContent;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,8 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 
@@ -26,6 +26,10 @@ public class StoryService {
     UserService userService;
     @Autowired
     PageContent pageContent;
+    @Autowired
+    TagService tagService;
+    @Autowired
+    TagRepository tagRepository;
     /*Post a story*/
 
     public Story findById(int storyId){
@@ -102,9 +106,35 @@ public class StoryService {
         return save(story) ;
 
     }
+    public Story addStoryTags(Story story){
+
+        Set<Tag> tags = story.getTags();
+        Set<Tag> storedTags = new HashSet<>();
+        Iterator<Tag> it = tags.iterator();
+        while(it.hasNext()){
+            Tag tag = tagService.createTag(it.next());
+
+            storedTags.add(tag);
+        }
+        story.setTags(storedTags);
+
+        return story;
+
+    }
+
+    public PageContent getAllStoryByTag(int pageNum , int pageSize,String tagName){
+        Pageable pageable = PageRequest.of(pageNum,pageSize);
+        Page<Story> page = storyRepo.findAllByTags_TagNameAndDraftedFalseAndScheduledFalse(pageable,tagName);
+        pageContent.setStories(page.getContent());
+        pageContent.setTotalNumberOfPages(page.getTotalPages());
+        pageContent.setTotalNumberOfStories( page.getTotalElements());
+        return pageContent ;
+
+    }
+
 
     public void checkSchedule(){
-        System.out.println("called");
+        //System.out.println("called");
         List<Story> stories = storyRepo.findByDraftedAndScheduled(false , true);
 
         for(Story story:stories){
