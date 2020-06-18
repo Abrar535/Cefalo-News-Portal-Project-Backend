@@ -2,6 +2,7 @@ package com.cefalonewsportal.backend.controller;
 
 import com.cefalonewsportal.backend.model.Story;
 import com.cefalonewsportal.backend.model.User;
+import com.cefalonewsportal.backend.service.FileSystemService;
 import com.cefalonewsportal.backend.service.StoryService;
 import com.cefalonewsportal.backend.service.TagService;
 import com.cefalonewsportal.backend.service.UserService;
@@ -10,9 +11,11 @@ import com.cefalonewsportal.backend.util.PageContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.List;
@@ -27,11 +30,13 @@ public class StoryController {
     JwtUtil jwtUtil;
     @Autowired
     UserService userService;
+    @Autowired
+    FileSystemService fileSystemService;
 
 
     /*A user creating a new story*/
-    @PostMapping("/api/stories")
-    public ResponseEntity<?> createStory(@RequestBody Story story, @RequestHeader("Authorization") String authorizationHeader ){
+    @PostMapping(value = "/api/stories")
+    public ResponseEntity<?> createStory(@RequestBody Story story, @RequestHeader("Authorization") String authorizationHeader, @RequestBody MultipartFile image ){
         //System.out.println("I am hit from createStory api "+ story);
         Integer userId = getJwtUserId(authorizationHeader);
     User user = storyService.findByIdUser(userId);
@@ -45,8 +50,8 @@ public class StoryController {
     }
     story = storyService.addStoryTags(story);
     story.setUser(user);
-
-
+//    boolean ret = fileSystemService.addImage(image);
+//        System.out.println(ret);
     return ResponseEntity.ok().body(storyService.save(story));
     }
 

@@ -35,11 +35,14 @@ public class Story   {
     private boolean drafted  ;
     private boolean scheduled  ;
 
+    private String images = "";
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
+
+
 
     @ManyToMany
     private Set<Tag> tags;
@@ -158,6 +161,14 @@ public class Story   {
 
     public void setScheduledDate(Date scheduledDate) {
         this.scheduledDate = scheduledDate;
+    }
+
+    public String getImages() {
+        return images;
+    }
+
+    public void setImages(String images) {
+        this.images = images;
     }
 
     public Set<Tag> getTags() {
