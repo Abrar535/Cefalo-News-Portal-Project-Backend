@@ -110,6 +110,12 @@ public class StoryService {
 
         Set<Tag> tags = story.getTags();
         Set<Tag> storedTags = new HashSet<>();
+
+        if(tags == null || tags.size() == 0) {
+            tags = new HashSet<>();
+            Tag unTagged = new Tag("others");
+            tags.add(unTagged);
+        }
         Iterator<Tag> it = tags.iterator();
         while(it.hasNext()){
             Tag tag = tagService.createTag(it.next());
@@ -123,6 +129,7 @@ public class StoryService {
     }
 
     public PageContent getAllStoryByTag(int pageNum , int pageSize,String tagName){
+        tagName = tagName.toLowerCase();
         Pageable pageable = PageRequest.of(pageNum,pageSize);
         Page<Story> page = storyRepo.findAllByTags_TagNameAndDraftedFalseAndScheduledFalse(pageable,tagName);
         pageContent.setStories(page.getContent());

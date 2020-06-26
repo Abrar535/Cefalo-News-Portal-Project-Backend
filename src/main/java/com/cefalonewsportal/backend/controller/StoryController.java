@@ -37,7 +37,7 @@ public class StoryController {
     /*A user creating a new story*/
     @PostMapping(value = "/api/stories")
     public ResponseEntity<?> createStory(@RequestBody Story story, @RequestHeader("Authorization") String authorizationHeader, @RequestBody MultipartFile image ){
-        //System.out.println("I am hit from createStory api "+ story);
+        System.out.println("I am hit from createStory api "+ story.getTags());
         Integer userId = getJwtUserId(authorizationHeader);
     User user = storyService.findByIdUser(userId);
     if(user == null){
@@ -104,7 +104,7 @@ public class StoryController {
     /*Get all stories by tags */
     @GetMapping("/api/public/tags/{tagName}/story")
     public ResponseEntity<?> getAllStoriesByTag(@RequestParam("pageNum") int pageNum , @RequestParam("pageSize") int pageSize , @PathVariable ("tagName") String tagName ){
-
+        System.out.println("i am hit "+storyService.getAllStoryByTag(pageNum,pageSize,tagName).getTotalNumberOfStories() );
         return ResponseEntity.ok().body(storyService.getAllStoryByTag(pageNum,pageSize,tagName));
 
 

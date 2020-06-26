@@ -44,7 +44,7 @@ public class Story   {
 
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Tag> tags;
 
 

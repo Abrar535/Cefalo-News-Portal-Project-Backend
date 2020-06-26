@@ -45,7 +45,14 @@ public class Tag {
     public void setStories(Set<Story> stories) {
         this.stories = stories;
     }
-//    @Override
+
+    public Tag() {
+    }
+    public Tag(String tagName){
+        this.tagName = tagName;
+    }
+
+    //    @Override
 //    public String toString() {
 //        return "Tag{" +
 //                "tagId=" + tagId +

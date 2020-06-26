@@ -13,6 +13,7 @@ public class TagService {
     TagRepository tagRepository;
 
     public Tag createTag(Tag tag){
+        tag.setTagName(tag.getTagName().toLowerCase());
         Tag existingTag = tagRepository.findByTagName(tag.getTagName());
 
         if(existingTag == null){
