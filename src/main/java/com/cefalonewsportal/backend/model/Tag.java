@@ -17,6 +17,8 @@ public class Tag {
     @NotNull
     private String tagName;
 
+    private Integer numberOfStories = 0;
+
 
     @ManyToMany(mappedBy = "tags")
     @JsonIgnore
@@ -44,6 +46,14 @@ public class Tag {
 
     public void setStories(Set<Story> stories) {
         this.stories = stories;
+    }
+
+    public Integer getNumberOfStories() {
+        return numberOfStories;
+    }
+
+    public void setNumberOfStories(Integer numberOfStories) {
+        this.numberOfStories = numberOfStories;
     }
 
     public Tag() {

@@ -49,6 +49,9 @@ public class TagService {
         tags.sort (
                 comparingInt(tag -> tag.getStories().size())
         );
+        tags.forEach(tag -> {
+            tag.setNumberOfStories(tag.getStories().size());
+        });
         Collections.reverse(tags);
         log.info("Get all trending tags called");
         return tags ;
